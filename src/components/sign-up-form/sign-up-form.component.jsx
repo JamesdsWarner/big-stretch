@@ -5,6 +5,7 @@ import Button from "../button/button.component";
 
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 
+
 import './sign-up-form.styles.scss'
 
 const defaultFormFields = {
@@ -19,14 +20,17 @@ const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { displayName, email, password, confirmPassword } = formFields;
 
-    console.log(formFields);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (password === confirmPassword) {
             try {
-                const { user } = await createAuthUserWithEmailAndPassword(email, password)
+                const { user } = await createAuthUserWithEmailAndPassword(
+                    email,
+                    password
+                );
+
                 await createUserDocumentFromAuth({ ...user, displayName });
                 setFormFields(defaultFormFields);
             } catch (error) {
@@ -49,7 +53,7 @@ const SignUpForm = () => {
 
     return (
         <div className="sign-up-container">
-        <h2>Don't have an account?</h2>
+            <h2>Don't have an account?</h2>
             <span>Sign up with your email and password</span>
             <form onSubmit={handleSubmit}>
                 <FormInput label='Display Name' type="text" required onChange={handleChange} name="displayName" value={displayName} />
